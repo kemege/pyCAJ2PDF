@@ -29,10 +29,15 @@ for x in xrange(0,pages_count):
 for page in pages:
 	f.seek(page[0])
 	offset = 0
+	f.seek(12, os.SEEK_CUR)
 	while offset<=page[1]:
 		char = f.read(4)
 		[u1, u2, u3, u4] = unpack('bbbb', char)
-		[word] = unpack('2s', pack('bb',u4,u3))
+		word = ''
+		if u3==0:
+			[word] = unpack('s', pack('b',u4))
+		else:
+			[word] = unpack('2s', pack('bb',u4,u3))
 		print(word, end='')
 		offset += 4
 
